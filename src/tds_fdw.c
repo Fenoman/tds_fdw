@@ -3252,7 +3252,7 @@ tdsImportSqlServerSchema(ImportForeignSchemaStmt *stmt, DBPROCESS  *dbproc,
 					}
 					else if (strcmp(data_type, "money") == 0 ||
 							 strcmp(data_type, "smallmoney") == 0)
-						appendStringInfoString(&buf, " money");
+						appendStringInfoString(&buf, " numeric");
 
 					/* Floating-point types */
 					else if (strcmp(data_type, "float") == 0)
@@ -3634,7 +3634,7 @@ tdsImportSybaseSchema(ImportForeignSchemaStmt *stmt, DBPROCESS  *dbproc,
 					}
 					else if (strcmp(data_type, "money") == 0 ||
 							 strcmp(data_type, "smallmoney") == 0)
-						appendStringInfoString(&buf, " money");
+						appendStringInfoString(&buf, " numeric");
 
 					/* Floating-point types */
 					else if (strcmp(data_type, "float") == 0)
