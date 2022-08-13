@@ -57,6 +57,7 @@
 #include "utils/memutils.h"
 #include "utils/guc.h"
 #include "utils/timestamp.h"
+#include "tsearch/ts_locale.h"
 
 #if (PG_VERSION_NUM >= 90300)
 #include "access/htup_details.h"
@@ -3209,7 +3210,7 @@ tdsImportSqlServerSchema(ImportForeignSchemaStmt *stmt, DBPROCESS  *dbproc,
 
 						resetStringInfo(&buf);
 						appendStringInfo(&buf, "CREATE FOREIGN TABLE %s (\n",
-										 quote_identifier(table_name));
+										 quote_identifier(lowerstr(table_name)));
 						first_column = true;
 						first_table = false;
 					}
@@ -3221,7 +3222,7 @@ tdsImportSqlServerSchema(ImportForeignSchemaStmt *stmt, DBPROCESS  *dbproc,
 
 					/* Print column name */
 					appendStringInfo(&buf, "  %s",
-									 quote_identifier(column_name));
+									 quote_identifier(lowerstr(column_name)));
 
 					/* Print column type */
 
@@ -3266,9 +3267,9 @@ tdsImportSqlServerSchema(ImportForeignSchemaStmt *stmt, DBPROCESS  *dbproc,
 					else if (strcmp(data_type, "datetime") == 0 ||
 							 strcmp(data_type, "datetime2") == 0 ||
 							 strcmp(data_type, "smalldatetime") == 0)
-						appendStringInfo(&buf, " timestamp(%d) without time zone", (datetime_precision > 6) ? 6 : datetime_precision);
+						appendStringInfo(&buf, " timestamptz", (datetime_precision > 6) ? 6 : datetime_precision);
 					else if (strcmp(data_type, "datetimeoffset") == 0)
-						appendStringInfo(&buf, " timestamp(%d) with time zone", (datetime_precision > 6) ? 6 : datetime_precision);
+						appendStringInfo(&buf, " timestamptz", (datetime_precision > 6) ? 6 : datetime_precision);
 					else if (strcmp(data_type, "time") == 0)
 						appendStringInfoString(&buf, " time");
 
@@ -3591,7 +3592,7 @@ tdsImportSybaseSchema(ImportForeignSchemaStmt *stmt, DBPROCESS  *dbproc,
 
 						resetStringInfo(&buf);
 						appendStringInfo(&buf, "CREATE FOREIGN TABLE %s (\n",
-										 quote_identifier(table_name));
+										 quote_identifier(lowerstr(table_name)));
 						first_column = true;
 						first_table = false;
 					}
@@ -3603,7 +3604,7 @@ tdsImportSybaseSchema(ImportForeignSchemaStmt *stmt, DBPROCESS  *dbproc,
 
 					/* Print column name */
 					appendStringInfo(&buf, "  %s",
-									 quote_identifier(column_name));
+									 quote_identifier(lowerstr(column_name)));
 
 					/* Print column type */
 
@@ -3648,7 +3649,7 @@ tdsImportSybaseSchema(ImportForeignSchemaStmt *stmt, DBPROCESS  *dbproc,
 					else if (strcmp(data_type, "datetime") == 0 ||
 							 strcmp(data_type, "smalldatetime") == 0 ||
 							 strcmp(data_type, "bigdatetime") == 0)
-						appendStringInfoString(&buf, " timestamp without time zone");
+						appendStringInfoString(&buf, " timestamptz");
 					else if (strcmp(data_type, "time") == 0 ||
 							 strcmp(data_type, "bigtime") == 0)
 						appendStringInfoString(&buf, " time");
