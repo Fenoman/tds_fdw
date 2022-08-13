@@ -3227,10 +3227,11 @@ tdsImportSqlServerSchema(ImportForeignSchemaStmt *stmt, DBPROCESS  *dbproc,
 					/* Print column type */
 
 					/* Numeric types */
-					if (strcmp(data_type, "bit") == 0 ||
-						strcmp(data_type, "smallint") == 0 ||
+					if (strcmp(data_type, "smallint") == 0 ||
 						strcmp(data_type, "tinyint") == 0)
 						appendStringInfoString(&buf, " smallint");
+                    else if (strcmp(data_type, "bit") == 0)
+                        appendStringInfoString(&buf, " bool");
 					else if (strcmp(data_type, "int") == 0)
 						appendStringInfoString(&buf, " integer");
 					else if (strcmp(data_type, "bigint") == 0)
@@ -3609,10 +3610,11 @@ tdsImportSybaseSchema(ImportForeignSchemaStmt *stmt, DBPROCESS  *dbproc,
 					/* Print column type */
 
 					/* Numeric types */
-					if (strcmp(data_type, "bit") == 0 ||
-						strcmp(data_type, "smallint") == 0 ||
+					if (strcmp(data_type, "smallint") == 0 ||
 						strcmp(data_type, "tinyint") == 0)
 						appendStringInfoString(&buf, " smallint");
+                    else if (strcmp(data_type, "bit") == 0)
+                        appendStringInfoString(&buf, " bool");
 					else if (strcmp(data_type, "int") == 0)
 						appendStringInfoString(&buf, " integer");
 					else if (strcmp(data_type, "bigint") == 0)
